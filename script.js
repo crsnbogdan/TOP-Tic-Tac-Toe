@@ -1,9 +1,7 @@
 const playerFactory = function(name, symbol) {
-    let logPlayerInfo = () => { console.log(`player name: ${name}; player symbol: ${symbol}`) };
     return {
         name,
-        symbol,
-        logPlayerInfo
+        symbol
     }
 }
 
@@ -13,11 +11,6 @@ const gameBoard = (function() {
             let board = [];
             const gameBoard = document.getElementById(`gameBoard`);
             const restartBtn = document.getElementById(`restartBtn`);
-
-            restartBtn.addEventListener(`click`, () => {
-                clearDOMBoard();
-                document.getElementById(`gameStatus`).textContent = `it's ${playerOne.name}'s turn`;
-            })
 
             function clearDOMBoard() {
                 for (let i = 0; i < 9; i++) {
@@ -29,8 +22,11 @@ const gameBoard = (function() {
                 })
             }
 
-            //add items to board array and DOM, and associate them with the attribute
-            //arrayItemIntex
+            restartBtn.addEventListener(`click`, () => {
+                clearDOMBoard();
+                document.getElementById(`gameStatus`).textContent = `it's ${playerOne.name}'s turn`;
+            })
+
             for (let i = 0; i < 9; i++) {
                 board.push(``);
                 let boardDOMItem = document.createElement(`div`);
@@ -58,16 +54,14 @@ const gameFlowControl = (function() {
     function compareBoardItemSymbols(comparedSymbol) {
         let gameBoardArr = gameBoard.board;
         if(
-            gameBoardArr[0] === gameBoardArr[1] && gameBoardArr[0] === gameBoardArr[2]  && gameBoardArr[0] === comparedSymbol ||
-            gameBoardArr[3] === gameBoardArr[4] && gameBoardArr[3] === gameBoardArr[5]  && gameBoardArr[3] === comparedSymbol ||
-            gameBoardArr[6] === gameBoardArr[7] && gameBoardArr[6] === gameBoardArr[8]  && gameBoardArr[6] === comparedSymbol ||
-
-            gameBoardArr[0] === gameBoardArr[3] && gameBoardArr[0] === gameBoardArr[6]  && gameBoardArr[0] === comparedSymbol ||
-            gameBoardArr[1] === gameBoardArr[4] && gameBoardArr[4] === gameBoardArr[7]  && gameBoardArr[4] === comparedSymbol ||
-            gameBoardArr[2] === gameBoardArr[5] && gameBoardArr[2] === gameBoardArr[8]  && gameBoardArr[2] === comparedSymbol ||
-
-            gameBoardArr[0] === gameBoardArr[4] && gameBoardArr[4] === gameBoardArr[8]  && gameBoardArr[0] === comparedSymbol ||
-            gameBoardArr[2] === gameBoardArr[4] && gameBoardArr[4] === gameBoardArr[6]  && gameBoardArr[2] === comparedSymbol
+            gameBoardArr[0] === gameBoardArr[1] && gameBoardArr[0] === gameBoardArr[2] && gameBoardArr[0] === comparedSymbol ||
+            gameBoardArr[3] === gameBoardArr[4] && gameBoardArr[3] === gameBoardArr[5] && gameBoardArr[3] === comparedSymbol ||
+            gameBoardArr[6] === gameBoardArr[7] && gameBoardArr[6] === gameBoardArr[8] && gameBoardArr[6] === comparedSymbol ||
+            gameBoardArr[0] === gameBoardArr[3] && gameBoardArr[0] === gameBoardArr[6] && gameBoardArr[0] === comparedSymbol ||
+            gameBoardArr[1] === gameBoardArr[4] && gameBoardArr[4] === gameBoardArr[7] && gameBoardArr[4] === comparedSymbol ||
+            gameBoardArr[2] === gameBoardArr[5] && gameBoardArr[2] === gameBoardArr[8] && gameBoardArr[2] === comparedSymbol ||
+            gameBoardArr[0] === gameBoardArr[4] && gameBoardArr[4] === gameBoardArr[8] && gameBoardArr[0] === comparedSymbol ||
+            gameBoardArr[2] === gameBoardArr[4] && gameBoardArr[4] === gameBoardArr[6] && gameBoardArr[2] === comparedSymbol
             ) {
                 if(comparedSymbol === playerOne.symbol) {
                     gameStatusDOM.textContent = `the winner is ${playerOne.name}`;
@@ -99,12 +93,12 @@ const gameFlowControl = (function() {
     })
 
     function switchPlayerTurn() {
-        if(playerOneTurn && !playerTwoTurn) {
+        if(playerOneTurn) {
             playerOneTurn = false;
             playerTwoTurn = true;
             gameStatusDOM.textContent = `it's ${playerTwo.name}'s turn`;
             
-        }   else if(playerTwoTurn && !playerOneTurn) {
+        }   else if(playerTwoTurn) {
             playerOneTurn = true;
             playerTwoTurn = false;
             gameStatusDOM.textContent = `it's ${playerOne.name}'s turn`;
